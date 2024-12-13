@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ลงเวลาการทำงาน</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f8f4ff;
+        }
+
+        .container {
+            text-align: center;
+            border: 1px solid #e0d8f5;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: #ffffff;
+            width: 300px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .time {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #6a5acd;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            color: #6a5acd;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            border: 1px solid #d3c4f5;
+            border-radius: 5px;
+            box-sizing: border-box;
+            background-color: #f9f6ff;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .log-time {
+            background-color: #a3d8f4;
+            color: #ffffff;
+        }
+
+        .log-time:hover {
+            background-color: #8ccae4;
+        }
+
+        .back {
+            background-color: #f9a8d4;
+            color: #ffffff;
+        }
+
+        .back:hover {
+            background-color: #f692c6;
+        }
+
+        .confirmation p {
+            font-size: 1.2rem;
+            color: #6a5acd;
+        }
+
+        .message {
+            display: none;
+            margin-top: 20px;
+            font-size: 1rem;
+            color: #6a5acd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="inputPage">
+        <div class="time" id="currentTime">08:15 AM</div>
+        <label for="employeeId">กรอกรหัสพนักงาน</label>
+        <input type="text" id="employeeId" placeholder="รหัสพนักงาน">
+        <button class="log-time" id="logTimeButton">ลงเวลา</button>
+        <button class="back" id="backButton">ย้อนกลับ</button>
+    </div>
+
+    <div class="container confirmation" id="confirmationPage" style="display: none;">
+        <div class="time" id="confirmationTime">08:15 AM</div>
+        <p>ยืนยันการลงเวลา</p>
+        <p id="confirmedEmployeeId">&lt;employee_id&gt;</p>
+        <button class="back" id="confirmBackButton">ย้อนกลับ</button>
+    </div>
+
+    <script>
+        // Update current time dynamically
+        function updateTime() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            const formattedTime = `${String(hours % 12 || 12).padStart(2, '0')}:${String(minutes).padStart(2, '0')} ${ampm}`;
+            document.getElementById('currentTime').textContent = formattedTime;
+            document.getElementById('confirmationTime').textContent = formattedTime;
+        }
+
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // Handle log time button click
+        const logTimeButton = document.getElementById('logTimeButton');
+        const backButton = document.getElementById('backButton');
+        const confirmBackButton = document.getElementById('confirmBackButton');
+
+        logTimeButton.addEventListener('click', () => {
+            const employeeId = document.getElementById('employeeId').value;
+            if (employeeId.trim() !== "") {
+                alert('คุณได้ลงเวลาแล้ว');
+                document.getElementById('confirmedEmployeeId').textContent = employeeId;
+                document.getElementById('inputPage').style.display = 'none';
+                document.getElementById('confirmationPage').style.display = 'block';
+            } else {
+                alert('กรุณากรอกรหัสพนักงาน');
+            }
+        });
+
+        // Handle back button click on input page (does nothing for now)
+        backButton.addEventListener('click', () => {
+            alert('คุณยังไม่ได้ลงเวลา');
+        });
+
+        // Handle back button click on confirmation page
+        confirmBackButton.addEventListener('click', () => {
+            document.getElementById('confirmationPage').style.display = 'none';
+            document.getElementById('inputPage').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
